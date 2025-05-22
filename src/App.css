@@ -1,38 +1,125 @@
-.App {
+/* Reset default styling */
+body, html {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* Center container */
+.app-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
   text-align: center;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+/* Logo styling */
+.logo {
+  width: 150px;
+  height: auto;
+  margin: 0 auto 20px;
+  display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* Headings */
+h1, h2, h3 {
+  color: #ffffff;
+  margin: 10px 0;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Form inputs */
+input, select {
+  padding: 10px;
+  margin: 5px;
+  border-radius: 6px;
+  border: none;
+  font-size: 1rem;
+  background-color: #1e1e1e;
+  color: #ffffff;
+  width: 90%;
+  max-width: 300px;
+}
+
+select option {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+/* Button styling */
+button {
+  background-color: #03dac6;
+  color: #000;
+  padding: 10px 20px;
+  margin: 8px 5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button:hover {
+  background-color: #018786;
+}
+
+/* Tabs styling */
+.tabs {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 
-.App-link {
-  color: #61dafb;
+.tab {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #03dac6;
+  border-radius: 5px;
+  padding: 8px 16px;
+  margin: 4px;
+  cursor: pointer;
+  font-weight: 500;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+.tab.active {
+  background-color: #03dac6;
+  color: #000;
+}
+
+/* Items list */
+.item {
+  background-color: #1f1f1f;
+  padding: 10px 15px;
+  margin: 10px auto;
+  border-radius: 8px;
+  text-align: left;
+  max-width: 90%;
+  cursor: pointer;
+  border: 1px solid #333;
+}
+
+.item:hover {
+  border-color: #03dac6;
+}
+
+.item span {
+  display: block;
+  margin: 5px 0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .tabs {
+    flex-direction: column;
+    align-items: center;
   }
-  to {
-    transform: rotate(360deg);
+
+  input, select, button {
+    width: 95%;
+  }
+
+  .item {
+    font-size: 0.95rem;
   }
 }
