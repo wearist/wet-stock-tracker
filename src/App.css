@@ -1,139 +1,33 @@
-/* Reset default styling */
-body, html {
-  margin: 0;
-  padding: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #000000;
-  color: #ffffff;
+.input-form input,
+.input-form select {
+  width: 180px;       /* smaller width */
+  max-width: 90vw;
+  padding: 4px 8px;  /* less padding for shorter height */
+  font-size: 0.9rem; /* slightly smaller text */
+  border-radius: 6px;
+  border: none;
+  background-color: #1e1e1e;
+  color: white;
 }
 
-/* Center container */
-.app-container {
-  max-width: 900px;
-  margin: 0 auto;
-  padding: 20px;
-  text-align: center;
-}
-
-/* Logo styling */
-.logo {
-  width: 120px;
-  height: auto;
-  margin: 0 auto 20px;
-  display: block;
-}
-
-/* Headings */
-h1, h2, h3 {
-  color: #ffffff;
-  margin: 10px 0;
-}
-
-/* Form inputs */
-input, select {
-  padding: 8px 12px;
-  margin: 5px;
+.input-form button {
+  width: 120px;       /* smaller button width */
+  padding: 6px 10px;
+  font-size: 0.9rem;
   border-radius: 8px;
-  border: none;
-  font-size: 1rem;
-  background-color: #1e1e1e;
-  color: #ffffff;
-  width: 90%;
-  max-width: 280px;
-}
-
-select option {
-  background-color: #1e1e1e;
-  color: #ffffff;
-}
-
-/* Button styling */
-button {
   background-color: #2196f3;
-  color: #ffffff;
-  padding: 8px 16px;
-  margin: 6px 4px;
+  color: white;
   border: none;
-  border-radius: 10px;
   cursor: pointer;
-  font-weight: 600;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
+  box-shadow: 0 3px 5px rgba(0,0,0,0.3), inset 0 -2px 0 rgba(0,0,0,0.2);
   transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-button:hover {
-  background-color: #1976d2;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 10px rgba(0,0,0,0.4), inset 0 -2px 0 rgba(0,0,0,0.25);
-}
-
-/* Tabs styling */
-.tabs {
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 10px;
-}
-
-.tabs button {
-  background-color: #1e1e1e;
-  color: #ffffff;
-  border: 1px solid #2196f3;
-  border-radius: 8px;
-  padding: 8px 14px;
-  margin: 4px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.tabs .active {
-  background-color: #2196f3;
-  color: #ffffff;
-}
-
-/* Category tabs */
-.category-tabs {
-  margin-top: 10px;
-}
-
-.category-tabs button {
-  padding: 6px 12px;
-  font-size: 0.9rem;
-}
-
-/* Items list */
-.item {
-  background-color: #1f1f1f;
-  padding: 12px 15px;
-  margin: 10px auto;
-  border-radius: 10px;
-  text-align: left;
-  max-width: 90%;
-  border: 1px solid #333;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,0.05);
-}
-
-.item:hover {
-  border-color: #2196f3;
-}
-
-.item span {
-  display: block;
-  margin: 5px 0;
-}
-
-/* Responsive adjustments */
-@media (max-width: 600px) {
-  .tabs {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  input, select, button {
-    width: 95%;
-  }
-
-  .item {
-    font-size: 0.95rem;
+@media (max-width: 480px) {
+  .input-form input,
+  .input-form select,
+  .input-form button {
+    width: 90vw; /* full width on tiny screens */
+    font-size: 1rem;
   }
 }

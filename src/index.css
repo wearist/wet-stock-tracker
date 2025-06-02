@@ -5,201 +5,230 @@
   padding: 0;
 }
 
-body,
-html {
+body, html, #root, .app-container {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #121212;
-  color: #ffffff;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-input,
-button,
-select {
-  font-family: inherit;
-}
-
-button:focus,
-input:focus,
-select:focus {
-  outline: none;
-}
-
-/* Prevent zoom and fix appearance on mobile date input */
-input[type='date'] {
-  font-size: 16px; /* prevent zoom on iOS */
-  -webkit-appearance: textfield; /* override default picker style */
-}
-
-input[type='date']::-webkit-inner-spin-button,
-input[type='date']::-webkit-clear-button {
-  display: none; /* hide unwanted buttons */
-}
-
-/* App Container and Layout */
-.app-container {
-  max-width: 800px;
-  margin: auto;
-  padding: 20px;
+  background-color: #121212; /* dark background */
+  color: #eee;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 10px;
 }
 
 /* Logo */
 .logo {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin-bottom: 10px;
+  width: 120px;
+  margin: 20px auto;
 }
 
-/* Tabs */
-.tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 20px;
+/* Tabs Container */
+.tabs, .category-tabs {
+  margin: 15px 0;
 }
 
-.tabs button {
-  flex: 1;
-  padding: 10px 0;
-  border: none;
-  background: #1f1f1f;
-  color: #fff;
+/* Buttons base style */
+.tabs button,
+.category-tabs button,
+.smart-button {
   cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.tabs button.active,
-.tabs button:hover {
-  background: #6a0dad; /* Purple highlight */
-}
-
-/* Category Tabs */
-.category-tabs {
-  display: flex;
-  justify-content: space-around;
-  margin-top: 20px;
-  margin-bottom: 20px;
-}
-
-.category-tabs button {
-  flex: 1;
-  padding: 8px 0;
+  padding: 8px 18px;
+  margin: 4px 8px;
+  font-size: 14px;
+  border-radius: 20px;
   border: none;
-  background: #2a2a2a;
-  color: #fff;
-  cursor: pointer;
+  min-width: 90px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.8);
+  color: white;
   font-weight: 600;
-  transition: background 0.3s;
-  margin: 0 5px;
+  display: inline-block;
+  vertical-align: middle;
+  background-clip: padding-box;
 }
 
-.category-tabs button.active,
-.category-tabs button:hover {
-  background: #6a0dad;
+/* Default smart button style (blue) */
+.smart-button {
+  background: #0066cc;
+  box-shadow: 0 0 8px #004080;
 }
 
-/* Input Form */
+.smart-button:hover {
+  background: #005bb5;
+}
+
+.active.smart-button {
+  box-shadow: 0 0 12px #005bb5;
+}
+
+/* Category Tabs Colors */
+.category-tabs button:nth-child(1) {
+  background: #f39c12; /* Dry - orange */
+  box-shadow: 0 0 6px #b06f00;
+}
+
+.category-tabs button:nth-child(2) {
+  background: #27ae60; /* Fresh - green */
+  box-shadow: 0 0 6px #1e8449;
+}
+
+.category-tabs button:nth-child(3) {
+  background: #2980b9; /* Frozen - blue */
+  box-shadow: 0 0 6px #1b4f72;
+}
+
+.category-tabs button:nth-child(4) {
+  background: #8e44ad; /* Dessert - purple */
+  box-shadow: 0 0 6px #5b2c6f;
+}
+
+.category-tabs button:nth-child(1).active,
+.category-tabs button:nth-child(2).active,
+.category-tabs button:nth-child(3).active,
+.category-tabs button:nth-child(4).active {
+  opacity: 0.95;
+}
+
+/* Scan Barcode Button uses smart-button style */
+.content > button.smart-button {
+  margin-bottom: 20px;
+}
+
+/* Search Input */
+.content > input[type="text"] {
+  max-width: 420px;
+  width: 100%;
+  margin: 12px auto 20px auto;
+  padding: 8px 10px;
+  font-size: 14px;
+  border-radius: 6px;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #eee;
+  box-sizing: border-box;
+  text-align: center;
+  transition: border-color 0.3s ease;
+}
+
+.content > input[type="text"]:focus {
+  border-color: #3399ff;
+  outline: none;
+  background-color: #333;
+}
+
+/* Input form */
 .input-form {
+  margin: 20px auto;
+  max-width: 420px;
   display: flex;
   flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
+  justify-content: center;
+  gap: 12px;
 }
 
 .input-form input,
-.input-form select,
-.input-form button {
-  flex: 1 1 150px;
+.input-form select {
+  flex: 1 1 110px;
+  min-width: 110px;
   padding: 8px 10px;
-  border: 1px solid #444;
-  background: #222;
-  color: #eee;
-  border-radius: 4px;
-}
-
-.input-form button {
-  background: #6a0dad;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  transition: background 0.3s;
-}
-
-.input-form button:hover {
-  background: #4b068e;
-}
-
-/* Item List */
-.item-list {
-  max-height: 350px;
-  overflow-y: auto;
-  border: 1px solid #444;
+  font-size: 14px;
   border-radius: 6px;
-  padding: 10px;
-  background: #1a1a1a;
+  border: 1px solid #555;
+  background-color: #222;
+  color: #eee;
+  box-sizing: border-box;
+  text-align: center;
+  transition: border-color 0.3s ease;
 }
 
-.item-list .item {
-  padding: 8px;
-  border-bottom: 1px solid #333;
-  cursor: pointer;
-  transition: background 0.2s;
+.input-form input:focus,
+.input-form select:focus {
+  border-color: #3399ff;
+  outline: none;
+  background-color: #333;
 }
 
-.item-list .item:last-child {
-  border-bottom: none;
+/* Item list */
+.item-list {
+  max-width: 460px;
+  margin: 0 auto 30px auto;
+  text-align: left;
 }
 
-.item-list .item:hover {
-  background: #333;
+.item {
+  background: #1e1e1e;
+  border-radius: 8px;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.8);
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: #ddd;
 }
 
-/* Buttons inside items */
+.item strong {
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 4px;
+}
+
+/* Item action buttons smaller */
 .item button {
-  margin-right: 10px;
-  padding: 4px 8px;
+  margin: 6px 6px 0 0;
+  font-size: 12px;
+  padding: 5px 10px;
+  min-width: 70px;
+  align-self: flex-start;
+  background-color: #0066cc;
   border: none;
-  background: #6a0dad;
+  border-radius: 14px;
   color: white;
   cursor: pointer;
-  border-radius: 3px;
-  font-size: 0.9rem;
-  transition: background 0.3s;
+  box-shadow: 0 0 6px #004080;
+  transition: background-color 0.3s ease;
 }
 
 .item button:hover {
-  background: #4b068e;
+  background-color: #005bb5;
 }
 
-/* Tabbed Category View for Shopping and Expiry */
-.tabbed-category-view {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+/* Center input text */
+input[type="text"],
+input[type="number"],
+input[type="date"],
+select {
+  text-align: center;
+  color: #eee;
 }
 
-.category-section h3 {
-  margin-bottom: 10px;
-  border-bottom: 2px solid #6a0dad;
-  padding-bottom: 4px;
-}
-
-/* Responsive tweaks */
-@media (max-width: 600px) {
+/* Responsive adjustments for mobile */
+@media (max-width: 480px) {
   .input-form {
-    flex-direction: column;
+    max-width: 90vw;
+  }
+
+  .input-form input,
+  .input-form select {
+    min-width: 100%;
+    flex: none;
+  }
+
+  .item-list {
+    max-width: 90vw;
   }
 
   .tabs button,
-  .category-tabs button {
-    font-size: 0.9rem;
-    padding: 8px 0;
+  .category-tabs button,
+  .smart-button {
+    min-width: 70px;
+    font-size: 12px;
+    padding: 6px 14px;
   }
 
-  .item button {
-    font-size: 0.8rem;
-    padding: 3px 6px;
+  .logo {
+    width: 90px;
   }
 }

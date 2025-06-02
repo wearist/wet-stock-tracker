@@ -172,19 +172,19 @@ function App() {
       <div className="tabs">
         <button
           onClick={() => setViewTab("stock")}
-          className={viewTab === "stock" ? "active" : ""}
+          className={viewTab === "stock" ? "active smart-button" : "smart-button"}
         >
           Stock
         </button>
         <button
           onClick={() => setViewTab("shopping")}
-          className={viewTab === "shopping" ? "active" : ""}
+          className={viewTab === "shopping" ? "active smart-button" : "smart-button"}
         >
           Shopping List
         </button>
         <button
           onClick={() => setViewTab("expiry")}
-          className={viewTab === "expiry" ? "active" : ""}
+          className={viewTab === "expiry" ? "active smart-button" : "smart-button"}
         >
           Expiry
         </button>
@@ -199,7 +199,7 @@ function App() {
             />
           )}
 
-          <button onClick={() => setScanning(true)}>
+          <button className="smart-button" onClick={() => setScanning(true)}>
             📷 Scan Barcode + Expiry
           </button>
 
@@ -216,11 +216,7 @@ function App() {
                   i.name.toLowerCase().includes(searchTerm.toLowerCase())
                 )
                 .map((item, i) => (
-                  <div
-                    key={i}
-                    className="item"
-                    onClick={() => handleSearchSelect(item)}
-                  >
+                  <div key={i} className="item" onClick={() => handleSearchSelect(item)}>
                     <strong>{item.name}</strong>
                     <br />
                     Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
@@ -257,9 +253,9 @@ function App() {
             <input
               type="date"
               value={newItem.expiry}
-              onChange={(e) => setNewItem({ ...newItem, expiry: e.target.value })}
-              min="1900-01-01"
-              max="2099-12-31"
+              onChange={(e) =>
+                setNewItem({ ...newItem, expiry: e.target.value })
+              }
             />
             <select
               value={newItem.category}
@@ -273,7 +269,7 @@ function App() {
                 </option>
               ))}
             </select>
-            <button onClick={handleAddOrUpdate}>
+            <button className="smart-button" onClick={handleAddOrUpdate}>
               {editingIndex !== null ? "Update" : "Add Item"}
             </button>
           </div>
@@ -283,7 +279,9 @@ function App() {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={category === cat ? "active" : ""}
+                className={
+                  category === cat ? "active smart-button" : "smart-button"
+                }
               >
                 {cat}
               </button>
@@ -298,8 +296,8 @@ function App() {
                 Qty: {item.quantity}, Threshold: {item.threshold}, Expiry:{" "}
                 {ukDateFormat(item.expiry)}
                 <br />
-                <button onClick={() => handleEdit(i)}>✏️ Edit</button>
-                <button onClick={() => handleDelete(i)}>🗑️ Delete</button>
+                <button className="smart-button" onClick={() => handleEdit(i)}>✏️ Edit</button>
+                <button className="smart-button" onClick={() => handleDelete(i)}>🗑️ Delete</button>
               </div>
             ))}
           </div>
@@ -319,10 +317,10 @@ function App() {
                     <br />
                     Qty: {item.quantity}, Threshold: {item.threshold}
                     <br />
-                    <button onClick={() => handleEdit(items.indexOf(item))}>
+                    <button className="smart-button" onClick={() => handleEdit(items.indexOf(item))}>
                       ✏️ Edit
                     </button>
-                    <button onClick={() => handleDelete(items.indexOf(item))}>
+                    <button className="smart-button" onClick={() => handleDelete(items.indexOf(item))}>
                       🗑️ Delete
                     </button>
                   </div>
@@ -345,10 +343,10 @@ function App() {
                     <br />
                     Expiry: {ukDateFormat(item.expiry)}, Qty: {item.quantity}
                     <br />
-                    <button onClick={() => handleEdit(items.indexOf(item))}>
+                    <button className="smart-button" onClick={() => handleEdit(items.indexOf(item))}>
                       ✏️ Edit
                     </button>
-                    <button onClick={() => handleDelete(items.indexOf(item))}>
+                    <button className="smart-button" onClick={() => handleDelete(items.indexOf(item))}>
                       🗑️ Delete
                     </button>
                   </div>
