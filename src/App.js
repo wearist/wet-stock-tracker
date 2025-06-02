@@ -11,23 +11,16 @@ import {
   doc,
 } from "firebase/firestore";
 
-const categories = [
-  "spirits",
-  "wines",
-  "bottles",
-  "softs",
-  "barrels",
-  "postmix",
-];
+const categories = ["Spirits", "Wines", "Bottles", "Softs", "Barrels", "Postmix"];
 
 function App() {
   const [items, setItems] = useState([]);
-  const [category, setCategory] = useState("spirits");
+  const [category, setCategory] = useState("Spirits");
   const [newItem, setNewItem] = useState({
     name: "",
     quantity: "",
     threshold: "",
-    category: "spirits",
+    category: "Spirits",
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [viewTab, setViewTab] = useState("stock");
@@ -82,7 +75,7 @@ function App() {
       name: "",
       quantity: "",
       threshold: "",
-      category: category,
+      category: "Spirits",
     });
     setEditingIndex(null);
     setSearchTerm("");
@@ -138,7 +131,6 @@ function App() {
 
       {viewTab === "stock" && (
         <div className="content">
-
           <input
             type="text"
             placeholder="Search item..."
@@ -166,31 +158,23 @@ function App() {
               type="text"
               placeholder="Item name"
               value={newItem.name}
-              onChange={(e) =>
-                setNewItem({ ...newItem, name: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
             <input
               type="number"
               placeholder="Quantity"
               value={newItem.quantity}
-              onChange={(e) =>
-                setNewItem({ ...newItem, quantity: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
             />
             <input
               type="number"
               placeholder="Threshold"
               value={newItem.threshold}
-              onChange={(e) =>
-                setNewItem({ ...newItem, threshold: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, threshold: e.target.value })}
             />
             <select
               value={newItem.category}
-              onChange={(e) =>
-                setNewItem({ ...newItem, category: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
             >
               {categories.map((cat) => (
                 <option key={cat} value={cat}>
@@ -208,9 +192,7 @@ function App() {
               <button
                 key={cat}
                 onClick={() => setCategory(cat)}
-                className={
-                  category === cat ? "active smart-button" : "smart-button"
-                }
+                className={category === cat ? "active smart-button" : "smart-button"}
               >
                 {cat}
               </button>
