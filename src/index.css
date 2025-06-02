@@ -5,7 +5,8 @@
   padding: 0;
 }
 
-body, html {
+body,
+html {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #121212;
   color: #ffffff;
@@ -13,7 +14,9 @@ body, html {
   -moz-osx-font-smoothing: grayscale;
 }
 
-input, button, select {
+input,
+button,
+select {
   font-family: inherit;
 }
 
@@ -23,7 +26,180 @@ select:focus {
   outline: none;
 }
 
-/* Prevent zoom on mobile for input */
-input[type="date"] {
-  font-size: 16px;
+/* Prevent zoom and fix appearance on mobile date input */
+input[type='date'] {
+  font-size: 16px; /* prevent zoom on iOS */
+  -webkit-appearance: textfield; /* override default picker style */
+}
+
+input[type='date']::-webkit-inner-spin-button,
+input[type='date']::-webkit-clear-button {
+  display: none; /* hide unwanted buttons */
+}
+
+/* App Container and Layout */
+.app-container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Logo */
+.logo {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 10px;
+}
+
+/* Tabs */
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 20px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px 0;
+  border: none;
+  background: #1f1f1f;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.tabs button.active,
+.tabs button:hover {
+  background: #6a0dad; /* Purple highlight */
+}
+
+/* Category Tabs */
+.category-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+.category-tabs button {
+  flex: 1;
+  padding: 8px 0;
+  border: none;
+  background: #2a2a2a;
+  color: #fff;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 0.3s;
+  margin: 0 5px;
+}
+
+.category-tabs button.active,
+.category-tabs button:hover {
+  background: #6a0dad;
+}
+
+/* Input Form */
+.input-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.input-form input,
+.input-form select,
+.input-form button {
+  flex: 1 1 150px;
+  padding: 8px 10px;
+  border: 1px solid #444;
+  background: #222;
+  color: #eee;
+  border-radius: 4px;
+}
+
+.input-form button {
+  background: #6a0dad;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.3s;
+}
+
+.input-form button:hover {
+  background: #4b068e;
+}
+
+/* Item List */
+.item-list {
+  max-height: 350px;
+  overflow-y: auto;
+  border: 1px solid #444;
+  border-radius: 6px;
+  padding: 10px;
+  background: #1a1a1a;
+}
+
+.item-list .item {
+  padding: 8px;
+  border-bottom: 1px solid #333;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.item-list .item:last-child {
+  border-bottom: none;
+}
+
+.item-list .item:hover {
+  background: #333;
+}
+
+/* Buttons inside items */
+.item button {
+  margin-right: 10px;
+  padding: 4px 8px;
+  border: none;
+  background: #6a0dad;
+  color: white;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 0.9rem;
+  transition: background 0.3s;
+}
+
+.item button:hover {
+  background: #4b068e;
+}
+
+/* Tabbed Category View for Shopping and Expiry */
+.tabbed-category-view {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.category-section h3 {
+  margin-bottom: 10px;
+  border-bottom: 2px solid #6a0dad;
+  padding-bottom: 4px;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .input-form {
+    flex-direction: column;
+  }
+
+  .tabs button,
+  .category-tabs button {
+    font-size: 0.9rem;
+    padding: 8px 0;
+  }
+
+  .item button {
+    font-size: 0.8rem;
+    padding: 3px 6px;
+  }
 }

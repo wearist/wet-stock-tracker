@@ -160,11 +160,8 @@ function App() {
     setSearchTerm("");
   };
 
-  // Format date for display as dd/mm/yyyy
   const ukDateFormat = (dateStr) => {
-    if (!dateStr) return "";
     const d = new Date(dateStr);
-    if (isNaN(d)) return "";
     return d.toLocaleDateString("en-GB");
   };
 
@@ -237,7 +234,9 @@ function App() {
               type="text"
               placeholder="Item name"
               value={newItem.name}
-              onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, name: e.target.value })
+              }
             />
             <input
               type="number"
@@ -257,13 +256,10 @@ function App() {
             />
             <input
               type="date"
-              inputMode="numeric"
-              pattern="\d{4}-\d{2}-\d{2}"
-              placeholder="yyyy-mm-dd"
               value={newItem.expiry}
-              onChange={(e) =>
-                setNewItem({ ...newItem, expiry: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, expiry: e.target.value })}
+              min="1900-01-01"
+              max="2099-12-31"
             />
             <select
               value={newItem.category}
@@ -347,7 +343,7 @@ function App() {
                   <div key={i} className="item">
                     <strong>{item.name}</strong>
                     <br />
-                    Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
+                    Expiry: {ukDateFormat(item.expiry)}, Qty: {item.quantity}
                     <br />
                     <button onClick={() => handleEdit(items.indexOf(item))}>
                       ✏️ Edit
