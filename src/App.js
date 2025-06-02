@@ -160,8 +160,11 @@ function App() {
     setSearchTerm("");
   };
 
+  // Format date for display as dd/mm/yyyy
   const ukDateFormat = (dateStr) => {
+    if (!dateStr) return "";
     const d = new Date(dateStr);
+    if (isNaN(d)) return "";
     return d.toLocaleDateString("en-GB");
   };
 
@@ -216,7 +219,11 @@ function App() {
                   i.name.toLowerCase().includes(searchTerm.toLowerCase())
                 )
                 .map((item, i) => (
-                  <div key={i} className="item" onClick={() => handleSearchSelect(item)}>
+                  <div
+                    key={i}
+                    className="item"
+                    onClick={() => handleSearchSelect(item)}
+                  >
                     <strong>{item.name}</strong>
                     <br />
                     Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
@@ -230,9 +237,7 @@ function App() {
               type="text"
               placeholder="Item name"
               value={newItem.name}
-              onChange={(e) =>
-                setNewItem({ ...newItem, name: e.target.value })
-              }
+              onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
             />
             <input
               type="number"
@@ -252,6 +257,9 @@ function App() {
             />
             <input
               type="date"
+              inputMode="numeric"
+              pattern="\d{4}-\d{2}-\d{2}"
+              placeholder="yyyy-mm-dd"
               value={newItem.expiry}
               onChange={(e) =>
                 setNewItem({ ...newItem, expiry: e.target.value })
@@ -339,7 +347,7 @@ function App() {
                   <div key={i} className="item">
                     <strong>{item.name}</strong>
                     <br />
-                    Expiry: {ukDateFormat(item.expiry)}, Qty: {item.quantity}
+                    Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
                     <br />
                     <button onClick={() => handleEdit(items.indexOf(item))}>
                       ✏️ Edit
