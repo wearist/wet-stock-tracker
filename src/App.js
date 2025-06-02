@@ -10,23 +10,27 @@ import {
   deleteDoc,
   doc,
 } from "firebase/firestore";
-import BarcodeScanner from "./BarcodeScanner";
 
-const categories = ["Dry", "Fresh", "Frozen", "Dessert"];
+const categories = [
+  "spirits",
+  "wines",
+  "bottles",
+  "softs",
+  "barrels",
+  "postmix",
+];
 
 function App() {
   const [items, setItems] = useState([]);
-  const [category, setCategory] = useState("Dry");
+  const [category, setCategory] = useState("spirits");
   const [newItem, setNewItem] = useState({
     name: "",
     quantity: "",
     threshold: "",
-    expiry: "",
-    category: "Dry",
+    category: "spirits",
   });
   const [editingIndex, setEditingIndex] = useState(null);
   const [viewTab, setViewTab] = useState("stock");
-  const [scanning, setScanning] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
 
   const itemsRef = collection(db, "items");
@@ -54,13 +58,7 @@ function App() {
   }, [items]);
 
   const handleAddOrUpdate = async () => {
-    if (
-      !newItem.name ||
-      !newItem.quantity ||
-      !newItem.threshold ||
-      !newItem.expiry
-    )
-      return;
+    if (!newItem.name || !newItem.quantity || !newItem.threshold) return;
 
     let updated = [...items];
 
@@ -84,8 +82,7 @@ function App() {
       name: "",
       quantity: "",
       threshold: "",
-      expiry: "",
-      category: "Dry",
+      category: category,
     });
     setEditingIndex(null);
     setSearchTerm("");
@@ -94,6 +91,7 @@ function App() {
   const handleEdit = (index) => {
     setNewItem(items[index]);
     setEditingIndex(index);
+    setViewTab("stock");
   };
 
   const handleDelete = async (index) => {
@@ -107,62 +105,16 @@ function App() {
     }
   };
 
-  const handleScanComplete = async ({ barcode, expiry }) => {
-    setScanning(false);
-
-    if (barcode) {
-      try {
-        const res = await fetch(
-          `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
-        );
-        const data = await res.json();
-        if (data.status === 1 && data.product.product_name) {
-          setNewItem((prev) => ({
-            ...prev,
-            name: data.product.product_name,
-            quantity: prev.quantity || "1",
-          }));
-        } else {
-          alert("Product not found in Open Food Facts.");
-        }
-      } catch {
-        alert("Error fetching product info.");
-      }
-    }
-
-    if (expiry) {
-      setNewItem((prev) => ({
-        ...prev,
-        expiry,
-      }));
-    }
-  };
-
-  const today = new Date();
-  const tomorrow = new Date();
-  tomorrow.setDate(today.getDate() + 1);
-
   const filteredItems = items.filter((item) => item.category === category);
   const shoppingItems = items.filter(
     (item) => parseFloat(item.quantity) <= parseFloat(item.threshold)
   );
-  const expiringItems = items.filter((item) => {
-    const itemDate = new Date(item.expiry);
-    return (
-      itemDate.toDateString() === today.toDateString() ||
-      itemDate.toDateString() === tomorrow.toDateString()
-    );
-  });
 
   const handleSearchSelect = (item) => {
     setNewItem(item);
     setEditingIndex(items.indexOf(item));
     setSearchTerm("");
-  };
-
-  const ukDateFormat = (dateStr) => {
-    const d = new Date(dateStr);
-    return d.toLocaleDateString("en-GB");
+    setViewTab("stock");
   };
 
   return (
@@ -182,26 +134,10 @@ function App() {
         >
           Shopping List
         </button>
-        <button
-          onClick={() => setViewTab("expiry")}
-          className={viewTab === "expiry" ? "active smart-button" : "smart-button"}
-        >
-          Expiry
-        </button>
       </div>
 
       {viewTab === "stock" && (
         <div className="content">
-          {scanning && (
-            <BarcodeScanner
-              onScanComplete={handleScanComplete}
-              onClose={() => setScanning(false)}
-            />
-          )}
-
-          <button className="smart-button" onClick={() => setScanning(true)}>
-            📷 Scan Barcode + Expiry
-          </button>
 
           <input
             type="text"
@@ -219,7 +155,7 @@ function App() {
                   <div key={i} className="item" onClick={() => handleSearchSelect(item)}>
                     <strong>{item.name}</strong>
                     <br />
-                    Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
+                    Qty: {item.quantity}
                   </div>
                 ))}
             </div>
@@ -248,13 +184,6 @@ function App() {
               value={newItem.threshold}
               onChange={(e) =>
                 setNewItem({ ...newItem, threshold: e.target.value })
-              }
-            />
-            <input
-              type="date"
-              value={newItem.expiry}
-              onChange={(e) =>
-                setNewItem({ ...newItem, expiry: e.target.value })
               }
             />
             <select
@@ -293,8 +222,7 @@ function App() {
               <div key={i} className="item">
                 <strong>{item.name}</strong>
                 <br />
-                Qty: {item.quantity}, Threshold: {item.threshold}, Expiry:{" "}
-                {ukDateFormat(item.expiry)}
+                Qty: {item.quantity}, Threshold: {item.threshold}
                 <br />
                 <button className="smart-button" onClick={() => handleEdit(i)}>✏️ Edit</button>
                 <button className="smart-button" onClick={() => handleDelete(i)}>🗑️ Delete</button>
@@ -316,32 +244,6 @@ function App() {
                     <strong>{item.name}</strong>
                     <br />
                     Qty: {item.quantity}, Threshold: {item.threshold}
-                    <br />
-                    <button className="smart-button" onClick={() => handleEdit(items.indexOf(item))}>
-                      ✏️ Edit
-                    </button>
-                    <button className="smart-button" onClick={() => handleDelete(items.indexOf(item))}>
-                      🗑️ Delete
-                    </button>
-                  </div>
-                ))}
-            </div>
-          ))}
-        </div>
-      )}
-
-      {viewTab === "expiry" && (
-        <div className="tabbed-category-view">
-          {categories.map((cat) => (
-            <div key={cat} className="category-section">
-              <h3>{cat}</h3>
-              {expiringItems
-                .filter((i) => i.category === cat)
-                .map((item, i) => (
-                  <div key={i} className="item">
-                    <strong>{item.name}</strong>
-                    <br />
-                    Expiry: {ukDateFormat(item.expiry)}, Qty: {item.quantity}
                     <br />
                     <button className="smart-button" onClick={() => handleEdit(items.indexOf(item))}>
                       ✏️ Edit

@@ -1,20 +1,19 @@
-// src/firebase.js
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore";
+import { getFirestore } from "firebase/firestore"; // Firestore import
 
-// Your Firebase config
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyCbYlWmYHkXaFPMfzKQI2dOjs_8LQdQBeU",
-  authDomain: "food-stock-tracker.firebaseapp.com",
-  databaseURL: "https://food-stock-tracker-default-rtdb.firebaseio.com",
-  projectId: "food-stock-tracker",
-  storageBucket: "food-stock-tracker.firebasestorage.app",
-  messagingSenderId: "205398790318",
-  appId: "1:205398790318:web:17d591f42bb7be734add3f"
+  apiKey: "AIzaSyBVxhfD4gJ1Km6a1F7i-fcD1oZ3ll9gCXw",
+  authDomain: "wet-stock-take.firebaseapp.com",
+  projectId: "wet-stock-take",
+  storageBucket: "wet-stock-take.firebasestorage.app",
+  messagingSenderId: "690885848482",
+  appId: "1:690885848482:web:13df310452558f7e8696fb"
 };
 
-// Initialize Firebase and Firestore
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
 
-export { db };
+// Initialize Firestore and export it
+export const db = getFirestore(app);
