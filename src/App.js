@@ -1,4 +1,3 @@
-// App.js
 import React, { useState, useEffect } from "react";
 import "./App.css";
 import logo from "./logo.png";
@@ -35,7 +34,10 @@ function App() {
   useEffect(() => {
     const loadData = async () => {
       const data = await getDocs(itemsRef);
-      const firebaseItems = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+      const firebaseItems = data.docs.map((doc) => ({
+        ...doc.data(),
+        id: doc.id,
+      }));
       setItems(firebaseItems);
       localStorage.setItem("items", JSON.stringify(firebaseItems));
     };
@@ -52,7 +54,12 @@ function App() {
   }, [items]);
 
   const handleAddOrUpdate = async () => {
-    if (!newItem.name || !newItem.quantity || !newItem.threshold || !newItem.expiry)
+    if (
+      !newItem.name ||
+      !newItem.quantity ||
+      !newItem.threshold ||
+      !newItem.expiry
+    )
       return;
 
     let updated = [...items];
@@ -87,7 +94,6 @@ function App() {
   const handleEdit = (index) => {
     setNewItem(items[index]);
     setEditingIndex(index);
-    setSearchTerm("");
   };
 
   const handleDelete = async (index) => {
@@ -98,16 +104,6 @@ function App() {
       }
       const updated = items.filter((_, i) => i !== index);
       setItems(updated);
-      if (editingIndex === index) {
-        setNewItem({
-          name: "",
-          quantity: "",
-          threshold: "",
-          expiry: "",
-          category: "Dry",
-        });
-        setEditingIndex(null);
-      }
     }
   };
 
@@ -116,7 +112,9 @@ function App() {
 
     if (barcode) {
       try {
-        const res = await fetch(`https://world.openfoodfacts.org/api/v0/product/${barcode}.json`);
+        const res = await fetch(
+          `https://world.openfoodfacts.org/api/v0/product/${barcode}.json`
+        );
         const data = await res.json();
         if (data.status === 1 && data.product.product_name) {
           setNewItem((prev) => ({
@@ -156,20 +154,16 @@ function App() {
     );
   });
 
-  // Search filtered by category
-  const searchedItems = filteredItems.filter(item =>
-    item.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleSearchSelect = (item) => {
+    setNewItem(item);
+    setEditingIndex(items.indexOf(item));
+    setSearchTerm("");
+  };
 
-  // On search, automatically populate newItem with first matched result for quick update
-  useEffect(() => {
-    if (searchTerm.trim() === "") return;
-    const found = searchedItems[0];
-    if (found) {
-      setNewItem(found);
-      setEditingIndex(items.findIndex(i => i.id === found.id));
-    }
-  }, [searchTerm]);
+  const ukDateFormat = (dateStr) => {
+    const d = new Date(dateStr);
+    return d.toLocaleDateString("en-GB");
+  };
 
   return (
     <div className="app-container">
@@ -178,19 +172,19 @@ function App() {
       <div className="tabs">
         <button
           onClick={() => setViewTab("stock")}
-          className={viewTab === "stock" ? "tab active" : "tab"}
+          className={viewTab === "stock" ? "active" : ""}
         >
           Stock
         </button>
         <button
           onClick={() => setViewTab("shopping")}
-          className={viewTab === "shopping" ? "tab active" : "tab"}
+          className={viewTab === "shopping" ? "active" : ""}
         >
           Shopping List
         </button>
         <button
           onClick={() => setViewTab("expiry")}
-          className={viewTab === "expiry" ? "tab active" : "tab"}
+          className={viewTab === "expiry" ? "active" : ""}
         >
           Expiry
         </button>
@@ -205,45 +199,74 @@ function App() {
             />
           )}
 
-          <button onClick={() => setScanning(true)}>📷 Scan Barcode + Expiry</button>
+          <button onClick={() => setScanning(true)}>
+            📷 Scan Barcode + Expiry
+          </button>
+
+          <input
+            type="text"
+            placeholder="Search item..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          {searchTerm && (
+            <div className="item-list">
+              {items
+                .filter((i) =>
+                  i.name.toLowerCase().includes(searchTerm.toLowerCase())
+                )
+                .map((item, i) => (
+                  <div key={i} className="item" onClick={() => handleSearchSelect(item)}>
+                    <strong>{item.name}</strong>
+                    <br />
+                    Qty: {item.quantity}, Expiry: {ukDateFormat(item.expiry)}
+                  </div>
+                ))}
+            </div>
+          )}
 
           <div className="input-form">
             <input
               type="text"
-              placeholder="Search items to auto-load"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              autoComplete="off"
-            />
-            <input
-              type="text"
               placeholder="Item name"
               value={newItem.name}
-              onChange={(e) => setNewItem({ ...newItem, name: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, name: e.target.value })
+              }
             />
             <input
               type="number"
               placeholder="Quantity"
               value={newItem.quantity}
-              onChange={(e) => setNewItem({ ...newItem, quantity: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, quantity: e.target.value })
+              }
             />
             <input
               type="number"
               placeholder="Threshold"
               value={newItem.threshold}
-              onChange={(e) => setNewItem({ ...newItem, threshold: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, threshold: e.target.value })
+              }
             />
             <input
               type="date"
               value={newItem.expiry}
-              onChange={(e) => setNewItem({ ...newItem, expiry: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, expiry: e.target.value })
+              }
             />
             <select
               value={newItem.category}
-              onChange={(e) => setNewItem({ ...newItem, category: e.target.value })}
+              onChange={(e) =>
+                setNewItem({ ...newItem, category: e.target.value })
+              }
             >
               {categories.map((cat) => (
-                <option key={cat} value={cat}>{cat}</option>
+                <option key={cat} value={cat}>
+                  {cat}
+                </option>
               ))}
             </select>
             <button onClick={handleAddOrUpdate}>
@@ -255,19 +278,8 @@ function App() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => {
-                  setCategory(cat);
-                  setSearchTerm("");
-                  setNewItem({
-                    name: "",
-                    quantity: "",
-                    threshold: "",
-                    expiry: "",
-                    category: cat,
-                  });
-                  setEditingIndex(null);
-                }}
-                className={category === cat ? "tab active" : "tab"}
+                onClick={() => setCategory(cat)}
+                className={category === cat ? "active" : ""}
               >
                 {cat}
               </button>
@@ -275,12 +287,15 @@ function App() {
           </div>
 
           <div className="item-list">
-            {searchedItems.map((item, i) => (
-              <div key={item.id} className="item">
-                <strong>{item.name}</strong><br />
-                Qty: {item.quantity}, Threshold: {item.threshold}, Expiry: {item.expiry}<br />
-                <button onClick={() => handleEdit(items.findIndex(i => i.id === item.id))}>✏️ Edit</button>
-                <button onClick={() => handleDelete(items.findIndex(i => i.id === item.id))}>🗑️ Delete</button>
+            {filteredItems.map((item, i) => (
+              <div key={i} className="item">
+                <strong>{item.name}</strong>
+                <br />
+                Qty: {item.quantity}, Threshold: {item.threshold}, Expiry:{" "}
+                {ukDateFormat(item.expiry)}
+                <br />
+                <button onClick={() => handleEdit(i)}>✏️ Edit</button>
+                <button onClick={() => handleDelete(i)}>🗑️ Delete</button>
               </div>
             ))}
           </div>
@@ -292,15 +307,22 @@ function App() {
           {categories.map((cat) => (
             <div key={cat} className="category-section">
               <h3>{cat}</h3>
-              {shoppingItems.filter(i => i.category === cat).map((item, i) => (
-                <div key={item.id} className="item">
-                  <strong>{item.name}</strong><br />
-                  Qty: {item.quantity}, Threshold: {item.threshold}<br />
-                  <button onClick={() => handleEdit(items.findIndex(i => i.id === item.id))}>✏️ Edit</button>
-                  <button onClick={() => handleDelete(items.findIndex(i => i.id === item.id))}>🗑️ Delete</button>
-                </div>
-              ))}
-              {shoppingItems.filter(i => i.category === cat).length === 0 && <p>No items low on stock.</p>}
+              {shoppingItems
+                .filter((i) => i.category === cat)
+                .map((item, i) => (
+                  <div key={i} className="item">
+                    <strong>{item.name}</strong>
+                    <br />
+                    Qty: {item.quantity}, Threshold: {item.threshold}
+                    <br />
+                    <button onClick={() => handleEdit(items.indexOf(item))}>
+                      ✏️ Edit
+                    </button>
+                    <button onClick={() => handleDelete(items.indexOf(item))}>
+                      🗑️ Delete
+                    </button>
+                  </div>
+                ))}
             </div>
           ))}
         </div>
@@ -311,15 +333,22 @@ function App() {
           {categories.map((cat) => (
             <div key={cat} className="category-section">
               <h3>{cat}</h3>
-              {expiringItems.filter(i => i.category === cat).map((item, i) => (
-                <div key={item.id} className="item">
-                  <strong>{item.name}</strong><br />
-                  Expiry: {item.expiry}<br />
-                  <button onClick={() => handleEdit(items.findIndex(i => i.id === item.id))}>✏️ Edit</button>
-                  <button onClick={() => handleDelete(items.findIndex(i => i.id === item.id))}>🗑️ Delete</button>
-                </div>
-              ))}
-              {expiringItems.filter(i => i.category === cat).length === 0 && <p>No items expiring soon.</p>}
+              {expiringItems
+                .filter((i) => i.category === cat)
+                .map((item, i) => (
+                  <div key={i} className="item">
+                    <strong>{item.name}</strong>
+                    <br />
+                    Expiry: {ukDateFormat(item.expiry)}, Qty: {item.quantity}
+                    <br />
+                    <button onClick={() => handleEdit(items.indexOf(item))}>
+                      ✏️ Edit
+                    </button>
+                    <button onClick={() => handleDelete(items.indexOf(item))}>
+                      🗑️ Delete
+                    </button>
+                  </div>
+                ))}
             </div>
           ))}
         </div>
